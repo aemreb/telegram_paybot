@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-conn.autocommit = False
+conn.autocommit = True
 cur = conn.cursor()
 
 class Status(enum.Enum):
@@ -59,8 +59,12 @@ def error(update, context):
 def signup(update, context):
     userID = update.message.from_user.id
     print(userID)
-    cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s)",
+    try:
+        cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s)",
                 (userID, 50.0))
+    except Exception as error:
+        print(error)
+
 
     cur.execute("""
         SELECT * 
