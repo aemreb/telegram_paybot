@@ -80,7 +80,7 @@ def send(update, context):
             receiver = cur.fetchone()[0]
             print(receiver)
             cur.execute("UPDATE users SET money = money + 10 WHERE userID = %s",
-                        (str(receiver), ))
+                        (receiver,))
             update.message.reply_text("You have " + str(cur.fetchone()[0]) + " buxx 🤑")
 
 
