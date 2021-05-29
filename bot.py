@@ -25,7 +25,7 @@ def start(update, context):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('''Selam kaşarlar... \n /signup nick: nickini yazıp kaydol \n /atm: kaç paran olduğunu gör \n /send nick amount: şu nicke şu miktarda para gönder \n Çok oynamayın tam test etmedim mucxxx 😚💦 ''')
+    update.message.reply_text('''Selam kaşarlar... \n\n /signup nick: nickini yazıp kaydol \n\n /atm: kaç paran olduğunu gör \n\n /send nick amount: şu nicke şu miktarda para gönder \n\n Çok oynamayın tam test etmedim mucxxx 😚💦 ''')
 
 def echo(update, context):
     """Echo the user message."""
