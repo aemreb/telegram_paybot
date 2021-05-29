@@ -97,7 +97,7 @@ def exchange():
         print(cur.fetchall())
 
         # Updating the records
-        sql = "UPDATE users SET money = money + 1 WHERE userID = '1234567'"
+        sql = "UPDATE users SET money = money + 1 WHERE userid = '1234567'"
         cur.execute(sql)
         print("Table updated...... ")
 
