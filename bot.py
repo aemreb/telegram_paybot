@@ -79,11 +79,7 @@ def send(update, context):
         if cur.fetchone():
             receiver = cur.fetchone()[0]
             print(receiver)
-            try:
-                cur.execute("UPDATE users SET money = 60 WHERE userID = '1234567'")
-                update.message.reply_text("You have " + str(cur.fetchone()[0]) + " buxx 🤑")
-            except Exception as error:
-                print(error)
+            exchange(update, amount, receiver, sender)
 
         else:
             pass
@@ -91,6 +87,13 @@ def send(update, context):
         print(error)
 
     conn.commit()
+
+def exchange(update, amount, receiver, sender):
+    try:
+        cur.execute("UPDATE users SET money = 60 WHERE userID = '1234567'")
+        update.message.reply_text("You have " + str(cur.fetchone()[0]) + " buxx 🤑")
+    except Exception as error:
+        print(error)
 
 def main():
 
