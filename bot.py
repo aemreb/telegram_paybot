@@ -52,6 +52,7 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def signup(update, context):
+    global status
     update.message.reply_text("In order to use the bot, sign up. Enter your email:")
     status = Status.SignUpMail
 
