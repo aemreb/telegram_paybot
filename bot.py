@@ -71,7 +71,6 @@ def send(update, context):
     print(receiver_username)
     amount = update.message.text.split()[2]
     print(amount)
-    exchange()
 
     try:
         cur.execute("SELECT userID FROM users WHERE username = %s",
@@ -79,8 +78,8 @@ def send(update, context):
         print(cur.fetchone()[0])
         if cur.fetchone():
             receiver = cur.fetchone()[0]
-            print(receiver)
-
+            print(type(receiver))
+            exchange(update, amount, str(receiver), str(sender))
 
         else:
             pass
@@ -89,7 +88,7 @@ def send(update, context):
 
     conn.commit()
 
-def exchange():
+def exchange(update, amount, receiver, sender):
     try:
         print("Contents of the Employee table: ")
         sql = '''SELECT * from users'''
@@ -98,7 +97,11 @@ def exchange():
 
         # Updating the records
         sql = "UPDATE users SET money = money + %s WHERE userID = %s"
-        cur.execute(sql, (10, "1234567"))
+        cur.execute(sql, (amount, receiver))
+        print("Table updated...... ")
+
+        sql = "UPDATE users SET money = money - %s WHERE userID = %s"
+        cur.execute(sql, (amount, sender))
         print("Table updated...... ")
 
         conn.commit()
