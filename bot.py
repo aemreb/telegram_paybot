@@ -39,12 +39,13 @@ def signup(update, context):
     userID = update.message.from_user.id
     print(userID)
     try:
-        username = (update.message.text).split[1]
+        print(update.message.text.split[1])
+        username = update.message.text.split[1]
         cur.execute("INSERT INTO users (userID, money, username) VALUES (%s, %s, %s)",
                 (userID, 50.0, username))
         update.message.reply_text("Created user. Welcome to Paybot.")
     except Exception as error:
-        update.message.reply_text(str(error))
+        print(error)
 
     cur.execute("""
         SELECT * 
@@ -60,7 +61,7 @@ def atm(update, context):
                     update.message.from_user.id)
         update.message.reply_text("You have %s money", cur.fetchone())
     except Exception as error:
-        update.message.reply_text(str(error))
+        print(error)
 
 def main():
 
