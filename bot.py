@@ -83,6 +83,11 @@ def send(update, context):
                         [amount, str(receiver)])
             cur.execute("UPDATE users SET money = money - %s WHERE userID = %s",
                         [amount, str(sender)])
+            cur.execute("""
+                    SELECT * 
+                    FROM users 
+                """)
+            print(cur.fetchall())
         else:
             pass
     except Exception as error:
