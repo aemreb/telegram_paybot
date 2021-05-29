@@ -53,11 +53,12 @@ def signup(update, context):
     print(cur.fetchall())
 
     conn.commit()
+
 def atm(update, context):
     try:
         cur.execute("SELECT money FROM users WHERE userID = %s",
                     update.message.from_user.id)
-        update.message.reply_text("You have %s money", update.message.from_user.id)
+        update.message.reply_text("You have %s money", cur.fetchone())
     except Exception as error:
         update.message.reply_text(error)
 
