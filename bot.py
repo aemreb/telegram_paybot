@@ -1,5 +1,4 @@
 import logging
-import enum
 import psycopg2
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
@@ -15,17 +14,6 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 conn.autocommit = True
 cur = conn.cursor()
 
-class Status(enum.Enum):
-    Initial = 0
-    SignUpMail = 1
-    SignUpPassword = 2
-    SignUpSuccessful = 3
-    LoginMail = 4
-    LoginPassword = 5
-    LoginSuccessful = 6
-    LoginFailed = 7
-
-status = Status(Status.Initial)
 logger = logging.getLogger(__name__)
 TOKEN = '1624315620:AAH5Ol2MORB80I6ArA6WwVBIAAcSranNAAk'
 
@@ -33,7 +21,7 @@ TOKEN = '1624315620:AAH5Ol2MORB80I6ArA6WwVBIAAcSranNAAk'
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
+    update.message.reply_text('Hi! Type /signup to sign up.')
 
 def help(update, context):
     """Send a message when the command /help is issued."""
@@ -41,16 +29,7 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    global status
-    if status == Status.SignUpMail:
-        update.message.reply_text("Enter your password: ")
-        status = Status.SignUpPassword
-    elif status == Status.SignUpPassword:
-        update.message.reply_text("Enter your password: ")
-        finishSignup()
-        status = Status.SignUpSuccessful
-    else:
-        print(status)
+    update.message.reply_text('Unknown command. Type /help to see the help menu.')
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -60,8 +39,9 @@ def signup(update, context):
     userID = update.message.from_user.id
     print(userID)
     try:
-        cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s)",
-                (userID, 50.0))
+        print(update.message)
+        cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s, %s)",
+                (userID, 50.0, "hello"))
         update.message.reply_text("Created user. Welcome to Paybot.")
     except Exception as error:
         print(error)
@@ -75,9 +55,6 @@ def signup(update, context):
 
     conn.commit()
 
-
-def finishSignup():
-    print("")
 def main():
 
     """Start the bot."""
