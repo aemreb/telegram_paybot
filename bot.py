@@ -75,7 +75,7 @@ def send(update, context):
     try:
         cur.execute("SELECT userID FROM users WHERE username = %s",
                     (receiver_username, ))
-        print(cur.fetchone())
+        print(cur.fetchone()[0])
         if cur.fetchone():
             receiver = cur.fetchone()[0]
             print(receiver)
