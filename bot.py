@@ -76,13 +76,10 @@ def send(update, context):
         cur.execute("SELECT userID FROM users WHERE username = %s",
                     (receiver_username, ))
         print(cur.fetchone()[0])
-        if cur.fetchone() is not None:
-            receiver = cur.fetchone()[0]
-            print(type(receiver))
-            exchange(update, amount, str(receiver), str(sender))
+        receiver = cur.fetchone()[0]
+        print(type(receiver))
+        exchange(update, amount, str(receiver), str(sender))
 
-        else:
-            pass
     except Exception as error:
         print(error)
 
