@@ -1,10 +1,7 @@
 import logging
 import enum
 
-import firebase_admin
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from firebase_admin import credentials
-from firebase_admin import auth
 
 import os
 PORT = int(os.environ.get('PORT', 5000))
