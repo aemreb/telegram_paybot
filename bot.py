@@ -91,7 +91,7 @@ def exchange(update, amount, receiver, sender):
         cur.execute(sql)
         result_set = cur.fetchall()
         for row in result_set:
-            if row[0] == sender and row[1] > amount:
+            if row[0] == sender and row[1] > int(amount):
                 sql = "UPDATE users SET money = money + %s WHERE userID = %s"
                 cur.execute(sql, (amount, receiver))
                 print("Table updated...... ")
