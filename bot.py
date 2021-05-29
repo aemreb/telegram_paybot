@@ -86,6 +86,8 @@ def send(update, context):
     conn.commit()
 
 def exchange(update, amount, receiver, sender):
+    cur = conn.cursor()
+
     try:
         print("Contents of the Employee table: ")
         sql = '''SELECT * from users'''
