@@ -14,7 +14,6 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur = conn.cursor()
 
-
 class Status(enum.Enum):
     Initial = 0
     SignUpMail = 1
@@ -62,6 +61,10 @@ def signup(update, context):
     cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s)",
                 (userID, 50.0))
 
+    cur.execute("""
+        SELECT * 
+        FROM users
+    """)
     print(cur.fetchall())
 
     conn.commit()
@@ -77,14 +80,8 @@ def main():
     # Post version 12 this will no longer be necessary
 
     updater = Updater(TOKEN, use_context=True)
-    cur.execute("""
-    SELECT * 
-    FROM users
-""")
-    print(cur.fetchall())
 
     # close the communication with the HerokuPostgres
-    cur.close()
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
