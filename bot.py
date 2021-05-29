@@ -92,8 +92,8 @@ def exchange(update, amount, receiver, sender):
     try:
         cur.execute(
             "UPDATE users SET money=(%s)"
-            " WHERE userID = (%s)",
-            (amount, receiver,))
+            " WHERE userID = ('%s')",
+            (amount, str(receiver),))
         conn.commit()
         cur.close()
     except Exception as error:
