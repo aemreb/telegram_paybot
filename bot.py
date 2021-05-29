@@ -81,7 +81,9 @@ def send(update, context):
             print(receiver)
             cur.execute("UPDATE users SET money = money + 10 WHERE userID = %s",
                         (str(receiver), ))
-           
+            update.message.reply_text("You have " + str(cur.fetchone()[0]) + " buxx 🤑")
+
+
         else:
             pass
     except Exception as error:
