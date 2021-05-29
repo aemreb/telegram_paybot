@@ -39,7 +39,7 @@ def signup(update, context):
     userID = update.message.from_user.id
     print(userID)
     try:
-        print(update.message.text.split[1])
+        print(update.message.text)
         username = update.message.text.split[1]
         cur.execute("INSERT INTO users (userID, money, username) VALUES (%s, %s, %s)",
                 (userID, 50.0, username))
