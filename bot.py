@@ -64,6 +64,26 @@ def atm(update, context):
     except Exception as error:
         print(error)
 
+def send(update, context):
+    sender = update.message.from_user.id
+    receiver_username = update.message.text.split()[1]
+    amount = update.message.text.split()[1]
+
+    try:
+        cur.execute("SELECT userID FROM users WHERE username = %s",
+                    (receiver_username, ))
+        if cur.fetchone():
+            receiver = cur.fetchone()[0]
+            print(receiver)
+            cur.execute("UPDATE users SET money = money + %s WHERE userID = %s",
+                        [amount, receiver])
+            cur.execute("UPDATE users SET money = money - %s WHERE userID = %s",
+                        [amount, sender])
+        else:
+            pass
+    except Exception as error:
+        print(error)
+
 def main():
 
     """Start the bot."""
@@ -83,6 +103,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("signup", signup))
     dp.add_handler(CommandHandler("atm", atm))
+    dp.add_handler(CommandHandler("send", send))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
