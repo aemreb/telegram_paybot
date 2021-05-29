@@ -66,12 +66,16 @@ def atm(update, context):
 
 def send(update, context):
     sender = update.message.from_user.id
+    print(sender)
     receiver_username = update.message.text.split()[1]
+    print(receiver_username)
     amount = update.message.text.split()[2]
+    print(amount)
 
     try:
         cur.execute("SELECT userID FROM users WHERE username = %s",
                     (receiver_username, ))
+        print(cur.fetchone())
         if cur.fetchone():
             receiver = cur.fetchone()[0]
             print(receiver)
