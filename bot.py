@@ -44,6 +44,8 @@ def echo(update, context):
         update.message.reply_text("Enter your password: ")
         finishSignup()
         status = Status.SignUpSuccessful
+    else:
+        print(status)
 
 def error(update, context):
     """Log Errors caused by Updates."""
