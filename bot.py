@@ -66,11 +66,8 @@ def atm(update, context):
 
 def send(update, context):
     sender = update.message.from_user.id
-    print(sender)
     receiver_username = update.message.text.split()[1]
-    print(receiver_username)
     amount = update.message.text.split()[2]
-    print(amount)
 
     try:
         cur.execute("SELECT userID FROM users WHERE username = %s",
@@ -92,19 +89,19 @@ def exchange(update, amount, receiver, sender):
         print("Contents of the Employee table: ")
         sql = '''SELECT * from users'''
         cur.execute(sql)
-        print(cur.fetchall())
+        result_set = cur.fetchall()
+        for row in result_set:
+            if row["userID"] == sender and row["money"] > amount:
+                sql = "UPDATE users SET money = money + %s WHERE userID = %s"
+                cur.execute(sql, (amount, receiver))
+                print("Table updated...... ")
 
-        # Updating the records
-        sql = "UPDATE users SET money = money + %s WHERE userID = %s"
-        cur.execute(sql, (amount, receiver))
-        print("Table updated...... ")
+                sql = "UPDATE users SET money = money - %s WHERE userID = %s"
+                cur.execute(sql, (amount, sender))
+                update.message.reply_text("İttifapbuxx sent 😫")
 
-        sql = "UPDATE users SET money = money - %s WHERE userID = %s"
-        cur.execute(sql, (amount, sender))
-        print("Table updated...... ")
-
-        conn.commit()
-        cur.close()
+                conn.commit()
+                cur.close()
     except Exception as error:
         print(error)
 
