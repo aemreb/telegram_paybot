@@ -70,9 +70,6 @@ def signup(update, context):
 
     conn.commit()
 
-    cur.close()
-    conn.close()
-
 
 def finishSignup():
     print("")
