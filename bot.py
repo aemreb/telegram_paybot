@@ -60,7 +60,7 @@ def atm(update, context):
         cur.execute("SELECT money FROM users WHERE userID = %s",
                     (str(update.message.from_user.id), ))
 
-        update.message.reply_text("You have " + str(cur.fetchone()[0]) + " buxx 🤑")
+        update.message.reply_text("You have " + str(cur.fetchone()[0]) + " İttifapbuxx 🤑")
     except Exception as error:
         print(error)
 
@@ -90,20 +90,24 @@ def exchange(update, amount, receiver, sender):
         sql = '''SELECT * from users'''
         cur.execute(sql)
         result_set = cur.fetchall()
+        shouldTransfer = False
         for row in result_set:
             if row[0] == sender and row[1] >= int(amount):
-                sql = "UPDATE users SET money = money + %s WHERE userID = %s"
-                cur.execute(sql, (amount, receiver))
-                print("Table updated...... ")
+                shouldTransfer = True
 
-                sql = "UPDATE users SET money = money - %s WHERE userID = %s"
-                cur.execute(sql, (amount, sender))
-                update.message.reply_text("İttifapbuxx sent 😫")
+        if shouldTransfer:
+            sql = "UPDATE users SET money = money + %s WHERE userID = %s"
+            cur.execute(sql, (amount, receiver))
+            print("Table updated...... ")
 
-                conn.commit()
-                cur.close()
-            else:
-                update.message.reply_text("Not enough İttifapbuxx you poor bitch 🙄")
+            sql = "UPDATE users SET money = money - %s WHERE userID = %s"
+            cur.execute(sql, (amount, sender))
+            update.message.reply_text("İttifapbuxx sent 😫")
+        else:
+            update.message.reply_text("Not enough İttifapbuxx you poor bitch 🙄")
+
+            conn.commit()
+            cur.close()
     except Exception as error:
         print(error)
 
