@@ -56,7 +56,8 @@ def error(update, context):
 def signup(update, context):
     global status
     update.message.reply_text("In order to use the bot, sign up. Enter your email:")
-    print(json.loads(eval(update))["message"]["chat"]["id"])
+    print(type(update))
+    #print(json.loads(eval(update))["message"]["chat"]["id"])
 
 def finishSignup():
     print("")
