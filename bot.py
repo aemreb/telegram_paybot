@@ -90,10 +90,16 @@ def send(update, context):
 
 def exchange(update, amount, receiver, sender):
     try:
-        cur.execute(
-            "UPDATE users SET money=(%s)"
-            " WHERE userID = ('%s')",
-            (amount, str(receiver),))
+        print("Contents of the Employee table: ")
+        sql = '''SELECT * from users'''
+        cur.execute(sql)
+        print(cur.fetchall())
+
+        # Updating the records
+        sql = "UPDATE users SET money = money + 1 WHERE userID = '1234567'"
+        cur.execute(sql)
+        print("Table updated...... ")
+
         conn.commit()
         cur.close()
     except Exception as error:
