@@ -62,9 +62,10 @@ def signup(update, context):
     try:
         cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s)",
                 (userID, 50.0))
+        update.message.reply_text("Created user. Welcome to Paybot.")
     except Exception as error:
         print(error)
-
+        update.message.reply_text("User already exists.")
 
     cur.execute("""
         SELECT * 
