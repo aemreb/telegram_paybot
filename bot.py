@@ -44,7 +44,7 @@ def signup(update, context):
                 (userID, 50.0, username))
         update.message.reply_text("Created user. Welcome to Paybot.")
     except Exception as error:
-        update.message.reply_text(error)
+        update.message.reply_text(str(error))
 
     cur.execute("""
         SELECT * 
@@ -60,7 +60,7 @@ def atm(update, context):
                     update.message.from_user.id)
         update.message.reply_text("You have %s money", cur.fetchone())
     except Exception as error:
-        update.message.reply_text(error)
+        update.message.reply_text(str(error))
 
 def main():
 
