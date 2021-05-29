@@ -40,7 +40,7 @@ def signup(update, context):
     print(userID)
     try:
         print(update.message)
-        cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s, %s)",
+        cur.execute("INSERT INTO users (userID, money, username) VALUES (%s, %s, %s)",
                 (userID, 50.0, "hello"))
         update.message.reply_text("Created user. Welcome to Paybot.")
     except Exception as error:
