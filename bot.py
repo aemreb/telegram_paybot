@@ -91,7 +91,7 @@ def exchange(update, amount, receiver, sender):
         cur.execute(sql)
         result_set = cur.fetchall()
         for row in result_set:
-            if row[0] == sender and row[1] > int(amount):
+            if row[0] == sender and row[1] >= int(amount):
                 sql = "UPDATE users SET money = money + %s WHERE userID = %s"
                 cur.execute(sql, (amount, receiver))
                 print("Table updated...... ")
@@ -102,6 +102,8 @@ def exchange(update, amount, receiver, sender):
 
                 conn.commit()
                 cur.close()
+            else:
+                update.message.reply_text("Not enough İttifapbuxx you poor bitch 🙄")
     except Exception as error:
         print(error)
 
