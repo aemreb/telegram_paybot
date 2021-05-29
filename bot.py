@@ -1,5 +1,6 @@
 import logging
 import enum
+import psycopg2
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -68,6 +69,18 @@ def main():
     # Post version 12 this will no longer be necessary
 
     updater = Updater(TOKEN, use_context=True)
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT * 
+    FROM users
+""")
+    print(cur.fetchall())
+
+    # close the communication with the HerokuPostgres
+    cur.close()
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
