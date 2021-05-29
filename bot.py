@@ -1,16 +1,19 @@
 import logging
 import enum
 import psycopg2
-import json
-
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
 import os
 PORT = int(os.environ.get('PORT', 5000))
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+cur = conn.cursor()
+
 
 class Status(enum.Enum):
     Initial = 0
@@ -54,10 +57,22 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def signup(update, context):
-    global status
-    update.message.reply_text("In order to use the bot, sign up. Enter your email:")
-    print(type(update))
-    print(update.message.from_user.id)
+    userID = update.message.from_user.id
+    print(userID)
+    cur.execute(f"""
+    INSERT INTO users(userID, money)
+    VALUES ({userID}, 50.0);
+    """)
+
+    cur.execute("SELECT * FROM users;")
+
+    print(cur.fetchall())
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
 
 def finishSignup():
     print("")
@@ -69,10 +84,6 @@ def main():
     # Post version 12 this will no longer be necessary
 
     updater = Updater(TOKEN, use_context=True)
-    DATABASE_URL = os.environ.get('DATABASE_URL')
-
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    cur = conn.cursor()
     cur.execute("""
     SELECT * 
     FROM users
