@@ -90,8 +90,10 @@ def send(update, context):
 
 def exchange(update, amount, receiver, sender):
     try:
-        sql = """ UPDATE users SET money = money + 10 where userID = '387443759'"""
-        cur.execute(sql)
+        cur.execute(
+            "UPDATE users SET money=(%s)"
+            " WHERE userID = (%s)",
+            ("amount", "receiver",))
         conn.commit()
         cur.close()
     except Exception as error:
