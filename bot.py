@@ -12,6 +12,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+conn.setAutoCommit(False)
 cur = conn.cursor()
 
 class Status(enum.Enum):
