@@ -59,12 +59,8 @@ def error(update, context):
 def signup(update, context):
     userID = update.message.from_user.id
     print(userID)
-    cur.execute(f"""
-    INSERT INTO users(userID, money)
-    VALUES ({userID}, 50.0);
-    """)
-
-    cur.execute("SELECT * FROM users;")
+    cur.execute("INSERT INTO users (userID, money) VALUES (%s, %s)",
+                (userID, 50.0))
 
     print(cur.fetchall())
 
