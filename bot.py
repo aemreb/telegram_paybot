@@ -39,7 +39,7 @@ def signup(update, context):
     userID = update.message.from_user.id
     print(userID)
     try:
-        username = ((update.message.text).split)[1]
+        username = (update.message.text).split[1]
         cur.execute("INSERT INTO users (userID, money, username) VALUES (%s, %s, %s)",
                 (userID, 50.0, username))
         update.message.reply_text("Created user. Welcome to Paybot.")
@@ -53,6 +53,13 @@ def signup(update, context):
     print(cur.fetchall())
 
     conn.commit()
+def atm(update, context):
+    try:
+        cur.execute("SELECT money FROM users WHERE userID = %s",
+                    update.message.from_user.id)
+        update.message.reply_text("You have %s money", update.message.from_user.id)
+    except Exception as error:
+        update.message.reply_text(error)
 
 def main():
 
@@ -72,7 +79,7 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("signup", signup))
-
+    dp.add_handler(CommandHandler("atm", atm))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
