@@ -80,9 +80,9 @@ def send(update, context):
             receiver = cur.fetchone()[0]
             print(receiver)
             cur.execute("UPDATE users SET money = money + %s WHERE userID = %s",
-                        (amount, str(receiver)))
+                        (str(amount), str(receiver)))
             cur.execute("UPDATE users SET money = money - %s WHERE userID = %s",
-                        (amount, str(sender)))
+                        (str(amount), str(sender)))
             cur.execute("""
                     SELECT * 
                     FROM users 
