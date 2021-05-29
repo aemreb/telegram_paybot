@@ -80,13 +80,15 @@ def send(update, context):
             receiver = cur.fetchone()[0]
             print(receiver)
             cur.execute("UPDATE users SET money = money + %s WHERE userID = %s",
-                        [amount, receiver])
+                        [amount, str(receiver)])
             cur.execute("UPDATE users SET money = money - %s WHERE userID = %s",
-                        [amount, sender])
+                        [amount, str(sender)])
         else:
             pass
     except Exception as error:
         print(error)
+
+    conn.commit()
 
 def main():
 
