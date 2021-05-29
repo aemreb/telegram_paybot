@@ -1,5 +1,11 @@
 import logging
+import enum
+
+import firebase_admin
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from firebase_admin import credentials
+from firebase_admin import auth
+
 import os
 PORT = int(os.environ.get('PORT', 5000))
 
@@ -7,6 +13,17 @@ PORT = int(os.environ.get('PORT', 5000))
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
+class Status(enum.Enum):
+    Initial = 0
+    SignUpMail = 1
+    SignUpPassword = 2
+    SignUpSuccessful = 3
+    LoginMail = 4
+    LoginPassword = 5
+    LoginSuccessful = 6
+    LoginFailed = 7
+
+status = Status(Status.Initial)
 logger = logging.getLogger(__name__)
 TOKEN = '1624315620:AAH5Ol2MORB80I6ArA6WwVBIAAcSranNAAk'
 
@@ -23,16 +40,37 @@ def help(update, context):
 def echo(update, context):
     """Echo the user message."""
     update.message.reply_text(update.message.text)
+    global status
+    if status == Status.SignUpMail:
+        update.message.reply_text("Enter your password: ")
+        status = Status.SignUpPassword
+    elif status == Status.SignUpPassword:
+        update.message.reply_text("Enter your password: ")
+        finishSignup()
+        status = Status.SignUpSuccessful
 
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
+def signup(update, context):
+    update.message.reply_text("In order to use the bot, sign up. Enter your email:")
+    status = Status.SignUpMail
+
+def finishSignup():
+    print("")
 def main():
+
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
+    cred = credentials.Certificate("/Users/emreboyaci/PycharmProjects/python-telegram-bot-heroku/savt-d0af8-firebase-adminsdk-hfs2b-f7440863d8.json")
+    firebase_admin.initialize_app(cred)
+
+    user = auth.get_user_by_email("hello@gmail.com")
+    print('Successfully fetched user data: {0}'.format(user.uid))
+
     updater = Updater(TOKEN, use_context=True)
 
     # Get the dispatcher to register handlers
@@ -41,6 +79,8 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("signup", signup))
+
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
@@ -58,6 +98,8 @@ def main():
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
+
+
 
 if __name__ == '__main__':
     main()
