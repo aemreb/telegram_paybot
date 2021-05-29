@@ -11,7 +11,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-conn.autocommit = False
+conn.autocommit = True
 cur = conn.cursor()
 
 logger = logging.getLogger(__name__)
@@ -97,7 +97,7 @@ def exchange():
         print(cur.fetchall())
 
         # Updating the records
-        sql = "UPDATE users SET money = money + %s WHERE userID = '%s'"
+        sql = "UPDATE users SET money = money + %s WHERE userID = %s"
         cur.execute(sql, (10, "1234567"))
         print("Table updated...... ")
 
