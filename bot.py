@@ -56,8 +56,6 @@ def signup(update, context):
     global status
     update.message.reply_text("In order to use the bot, sign up. Enter your email:")
     print(update)
-    print(context)
-    status = Status.SignUpMail
 
 def finishSignup():
     print("")
