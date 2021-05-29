@@ -67,7 +67,7 @@ def atm(update, context):
 def send(update, context):
     sender = update.message.from_user.id
     receiver_username = update.message.text.split()[1]
-    amount = update.message.text.split()[1]
+    amount = update.message.text.split()[2]
 
     try:
         cur.execute("SELECT userID FROM users WHERE username = %s",
