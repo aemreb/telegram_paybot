@@ -93,7 +93,7 @@ def exchange(update, amount, receiver, sender):
         result_set = cur.fetchall()
         shouldTransfer = False
         for row in result_set:
-            if row[0] == sender and row[1] >= int(amount):
+            if row[0] == sender and row[1] >= int(amount) and int(amount) > 0:
                 shouldTransfer = True
 
         if shouldTransfer:
