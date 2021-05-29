@@ -36,7 +36,6 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    update.message.reply_text(update.message.text)
     global status
     if status == Status.SignUpMail:
         update.message.reply_text("Enter your password: ")
