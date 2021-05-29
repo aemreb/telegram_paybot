@@ -75,8 +75,8 @@ def send(update, context):
     try:
         cur.execute("SELECT userID FROM users WHERE username = %s",
                     (receiver_username, ))
-        print(cur.fetchone()[0])
         receiver = cur.fetchone()[0]
+        print(receiver)
         print(type(receiver))
         exchange(update, amount, str(receiver), str(sender))
 
