@@ -1,6 +1,7 @@
 import logging
 import enum
 import psycopg2
+import json
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -55,7 +56,7 @@ def error(update, context):
 def signup(update, context):
     global status
     update.message.reply_text("In order to use the bot, sign up. Enter your email:")
-    print(update["message"])
+    print(json.loads(update)["message"]["chat"]["id"])
 
 def finishSignup():
     print("")
