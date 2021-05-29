@@ -97,8 +97,8 @@ def exchange():
         print(cur.fetchall())
 
         # Updating the records
-        sql = "UPDATE users SET money = money + 1 WHERE userid = '1234567'"
-        cur.execute(sql)
+        sql = "UPDATE users SET money = money + %s WHERE userID = '%s'"
+        cur.execute(sql, (10, "1234567"))
         print("Table updated...... ")
 
         conn.commit()
