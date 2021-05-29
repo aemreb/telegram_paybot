@@ -63,7 +63,7 @@ def signup(update, context):
 
     cur.execute("""
         SELECT * 
-        FROM users
+        FROM users 
     """)
     print(cur.fetchall())
 
