@@ -60,7 +60,7 @@ def atm(update, context):
         cur.execute("SELECT money FROM users WHERE userID = %s",
                     (str(update.message.from_user.id), ))
 
-        update.message.reply_text("You have" + str(cur.fetchone()[0]) + "money")
+        update.message.reply_text("You have " + str(cur.fetchone()[0]) + " buxx 🤑")
     except Exception as error:
         print(error)
 
