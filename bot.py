@@ -65,11 +65,6 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    cred = credentials.Certificate("/Users/emreboyaci/PycharmProjects/python-telegram-bot-heroku/savt-d0af8-firebase-adminsdk-hfs2b-f7440863d8.json")
-    firebase_admin.initialize_app(cred)
-
-    user = auth.get_user_by_email("hello@gmail.com")
-    print('Successfully fetched user data: {0}'.format(user.uid))
 
     updater = Updater(TOKEN, use_context=True)
 
