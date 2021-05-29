@@ -45,6 +45,7 @@ def signup(update, context):
                 (userID, 50.0, username))
         update.message.reply_text("Created user. Welcome to Paybot.")
     except Exception as error:
+        update.message.reply_text("User already exists aşko")
         print(error)
 
     cur.execute("""
