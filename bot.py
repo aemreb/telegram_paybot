@@ -102,7 +102,12 @@ def exchange(update, amount, receiver, sender):
 
             sql = "UPDATE users SET money = money - %s WHERE userID = %s"
             cur.execute(sql, (amount, sender))
-            update.message.reply_text("İttifapbuxx sent 😫")
+            #update.message.reply_text("İttifapbuxx sent 😫")
+
+            sql = "SELECT username FROM users WHERE userID = %s"
+            cur.execute(sql, (sender, ))
+            sender_username = cur.fetchone()[0]
+            update.message.reply_text(str(amount) + "İttifapbuxx sent to " + str(sender_username) + "😫")
         else:
             update.message.reply_text("Not enough İttifapbuxx you poor bitch 🙄")
 
