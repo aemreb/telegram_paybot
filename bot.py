@@ -1,6 +1,6 @@
 import logging
 import psycopg2
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler
 import os
 
 import strings
@@ -20,11 +20,6 @@ conn.autocommit = True
 cur = conn.cursor()
 
 logger = logging.getLogger(__name__)
-
-# Define a few command handlers. These usually take the two arguments update and
-# context. Error handlers also receive the raised TelegramError object in
-# error.
-
 
 def start(update, context):
     """Send a message when the command /start is issued."""
@@ -51,9 +46,9 @@ def signup(update, context):
             (userID,
              50.0,
              username))
-        update.message.reply_text("Created user. Welcome to Paybot.")
+        update.message.reply_text(strings.user_created)
     except Exception as error:
-        update.message.reply_text("User already exists aşko")
+        update.message.reply_text(strings.user_exists)
         print(error)
 
     cur.execute("""
@@ -71,7 +66,7 @@ def atm(update, context):
                     (str(update.message.from_user.id),))
 
         update.message.reply_text(
-            "You have " + str(cur.fetchone()[0]) + " İttifapbuxx 🤑")
+            "You have " + str(cur.fetchone()[0]) + " buxx 🤑")
     except Exception as error:
         print(error)
 
@@ -99,7 +94,6 @@ def exchange(update, amount, receiver_username, receiver, sender):
     cur = conn.cursor()
 
     try:
-        print("Contents of the Employee table: ")
         sql = '''SELECT * from users'''
         cur.execute(sql)
         result_set = cur.fetchall()
@@ -111,25 +105,22 @@ def exchange(update, amount, receiver_username, receiver, sender):
         if shouldTransfer:
             sql = "UPDATE users SET money = money + %s WHERE userID = %s"
             cur.execute(sql, (amount, receiver))
-            print("Table updated...... ")
 
             sql = "UPDATE users SET money = money - %s WHERE userID = %s"
             cur.execute(sql, (amount, sender))
-            # update.message.reply_text("İttifapbuxx sent 😫")
 
             sql = "SELECT username FROM users WHERE userID = %s"
             cur.execute(sql, (sender,))
             sender_username = cur.fetchone()[0]
             update.message.reply_text(
                 str(amount) +
-                " İttifapbuxx sent to " +
+                " buxx sent to " +
                 str(receiver_username) +
                 " by " +
                 str(sender_username) +
                 " 😫")
         else:
-            update.message.reply_text(
-                "Not enough İttifapbuxx you poor bitch 🙄")
+            update.message.reply_text(strings.not_enough_buxx)
 
             conn.commit()
             cur.close()
@@ -138,16 +129,9 @@ def exchange(update, amount, receiver_username, receiver, sender):
 
 
 def main():
-    """Start the bot."""
-    # Create the Updater and pass it your bot's token.
-    # Make sure to set use_context=True to use the new context based callbacks
-    # Post version 12 this will no longer be necessary
 
     updater = Updater(TOKEN, use_context=True)
 
-    # close the communication with the HerokuPostgres
-
-    # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
@@ -163,9 +147,6 @@ def main():
                           url_path=TOKEN)
     updater.bot.setWebhook(PROJECT_URL + TOKEN)
 
-    # Run the bot until you press Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT. This should be used most of the time, since
-    # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
 
 
