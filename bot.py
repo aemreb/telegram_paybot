@@ -75,14 +75,14 @@ def send(update, context):
         receiver = cur.fetchone()[0]
         print(receiver)
         print(type(receiver))
-        exchange(update, amount, str(receiver), str(sender))
+        exchange(update, amount, receiver_username, str(receiver), str(sender))
 
     except Exception as error:
         print(error)
 
     conn.commit()
 
-def exchange(update, amount, receiver, sender):
+def exchange(update, amount, receiver_username, receiver, sender):
     cur = conn.cursor()
 
     try:
@@ -107,7 +107,7 @@ def exchange(update, amount, receiver, sender):
             sql = "SELECT username FROM users WHERE userID = %s"
             cur.execute(sql, (sender, ))
             sender_username = cur.fetchone()[0]
-            update.message.reply_text(str(amount) + " İttifapbuxx sent to " + str(receiver) + " by " + str(sender_username) + "😫")
+            update.message.reply_text(str(amount) + " İttifapbuxx sent to " + str(receiver_username) + " by " + str(sender_username) + "😫")
         else:
             update.message.reply_text("Not enough İttifapbuxx you poor bitch 🙄")
 
