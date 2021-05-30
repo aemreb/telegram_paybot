@@ -2,6 +2,7 @@ import logging
 import psycopg2
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
+import config
 PORT = int(os.environ.get('PORT', 5000))
 
 # Enable logging
@@ -15,7 +16,6 @@ conn.autocommit = True
 cur = conn.cursor()
 
 logger = logging.getLogger(__name__)
-TOKEN = '1624315620:AAH5Ol2MORB80I6ArA6WwVBIAAcSranNAAk'
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
@@ -124,7 +124,7 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
 
-    updater = Updater(TOKEN, use_context=True)
+    updater = Updater(config.TOKEN, use_context=True)
 
     # close the communication with the HerokuPostgres
 
@@ -147,8 +147,8 @@ def main():
     # Start the Bot
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
-                          url_path=TOKEN)
-    updater.bot.setWebhook('https://protected-mesa-20804.herokuapp.com/' + TOKEN)
+                          url_path=config.TOKEN)
+    updater.bot.setWebhook('https://protected-mesa-20804.herokuapp.com/' + config.TOKEN)
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
