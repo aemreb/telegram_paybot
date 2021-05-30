@@ -21,6 +21,7 @@ cur = conn.cursor()
 
 logger = logging.getLogger(__name__)
 
+
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text(strings.signup)
@@ -29,10 +30,6 @@ def start(update, context):
 def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text(strings.help)
-
-
-def echo(update, context):
-    """Echo the user message."""
 
 
 def signup(update, context):
@@ -50,12 +47,6 @@ def signup(update, context):
     except Exception as error:
         update.message.reply_text(strings.user_exists)
         print(error)
-
-    cur.execute("""
-        SELECT *
-        FROM users
-    """)
-    print(cur.fetchall())
 
     conn.commit()
 
