@@ -29,7 +29,6 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    update.message.reply_text('Unknown command. Type /help to see the help menu.')
 
 def error(update, context):
     """Log Errors caused by Updates."""
