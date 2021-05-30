@@ -82,7 +82,7 @@ def send(update, context):
 
     conn.commit()
 
-def exchange(update, amount, receiver, receiver_username, sender):
+def exchange(update, amount, receiver, sender):
     cur = conn.cursor()
 
     try:
