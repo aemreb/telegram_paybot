@@ -34,7 +34,6 @@ def help(update, context):
 
 def signup(update, context):
     userID = update.message.from_user.id
-    print(userID)
     try:
         print(update.message.text.split())
         username = update.message.text.split()[1]
@@ -71,8 +70,6 @@ def send(update, context):
         cur.execute("SELECT userID FROM users WHERE username = %s",
                     (receiver_username,))
         receiver = cur.fetchone()[0]
-        print(receiver)
-        print(type(receiver))
         exchange(update, amount, receiver_username, str(receiver), str(sender))
 
     except Exception as error:
