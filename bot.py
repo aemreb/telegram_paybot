@@ -85,6 +85,22 @@ def send(update, context):
     conn.commit()
     cur.close()
 
+def whoami(update, context):
+    cur = conn.cursor()
+    sender = update.message.from_user.id
+
+    try:
+        cur.execute("SELECT username FROM users WHERE userID = %s",
+                    (sender,))
+        receiver = cur.fetchone()[0]
+
+        update.message.reply_text("Your username is " + receiver)
+
+    except Exception as error:
+        print(error)
+
+    conn.commit()
+    cur.close()
 
 def exchange(update, amount, receiver_username, receiver, sender):
     cur = conn.cursor()
@@ -136,6 +152,7 @@ def main():
     dp.add_handler(CommandHandler("signup", signup))
     dp.add_handler(CommandHandler("atm", atm))
     dp.add_handler(CommandHandler("send", send))
+    dp.add_handler(CommandHandler("whoami", whoami))
 
     # Start the Bot
     updater.start_webhook(listen="0.0.0.0",
