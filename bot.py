@@ -90,7 +90,7 @@ def whoami(update, context):
     sender = update.message.from_user.id
 
     try:
-        cur.execute("SELECT username FROM users WHERE userID = %s",
+        cur.execute("SELECT username FROM users WHERE userID = '%s'",
                     (sender,))
         receiver = cur.fetchone()[0]
 
