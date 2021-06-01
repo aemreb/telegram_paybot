@@ -33,6 +33,7 @@ def help(update, context):
 
 
 def signup(update, context):
+    cur = conn.cursor()
     userID = update.message.from_user.id
     try:
         print(update.message.text.split())
@@ -48,9 +49,11 @@ def signup(update, context):
         print(error)
 
     conn.commit()
+    cur.close()
 
 
 def atm(update, context):
+    cur = conn.cursor()
     try:
         cur.execute("SELECT money FROM users WHERE userID = %s",
                     (str(update.message.from_user.id),))
@@ -60,8 +63,12 @@ def atm(update, context):
     except Exception as error:
         print(error)
 
+    conn.commit()
+    cur.close()
+
 
 def send(update, context):
+    cur = conn.cursor()
     sender = update.message.from_user.id
     receiver_username = update.message.text.split()[1]
     amount = update.message.text.split()[2]
@@ -76,6 +83,7 @@ def send(update, context):
         print(error)
 
     conn.commit()
+    cur.close()
 
 
 def exchange(update, amount, receiver_username, receiver, sender):
