@@ -141,7 +141,9 @@ def exchange(update, amount, receiver_username, receiver, sender):
 
 
 def main():
-
+    global conn
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn.autocommit = True
     updater = Updater(TOKEN, use_context=True)
 
     dp = updater.dispatcher
